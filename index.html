@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Job Feldbrugge" />
+  <title>Hamiltonian Monte Carlo</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel = "icon" href = "figures/icon.png" type = "image/x-icon"><br />
+  <a href="https://jfeldbrugge.github.io/index.html">Home</a>
+  <a href="https://jfeldbrugge.github.io/">Projects and Code</a>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Hamiltonian Monte Carlo</h1>
+<p class="author">Job Feldbrugge</p>
+</header>
+<p>The Hamiltonian or Hybrid Monte Carlo (HMC) method is an elegant way
+to sample nontrivial distributions in probability theory based on
+physical intuitions. It was developed by algorithm was originally
+proposed by Simon Duane, Anthony Kennedy, Brian Pendleton and Duncan
+Roweth in 1987 for calculations in lattice quantum chromodynamic (see
+the
+<a href="https://www.sciencedirect.com/science/article/pii/037026938791197X?via%3Dihub">
+paper</a>). These notes serve as a brief introduction to the core of the
+HMC method for sampling distributions, inspired by the great
+<a href="https://arxiv.org/abs/1701.02434">review</a> by Michael
+Betancourt.</p>
+<p>The classification of surfaces asserts that every connected closed
+compact surface is topologically homeomorphic to either a sphere, a
+sphere with a number of handles or crosscaps. This theorem has been
+known since the 1860’s, but was recently simplified by John H. Conway
+(1992), known as the Zero Irrelevance Proof or in sort the ZIP proof. I
+will here describe a beautiful topological proof for the classification
+of combinatorial surfaces. These notes are based on
+<a href="">combinatorial topology of surfaces</a> by Robert C. James
+(1955), <a href="">Conway’s ZIP proof</a> by Francis and Weeks (1999),
+<a href="https://www.youtube.com/watch?v=Ap2c1dPyIVo&list=PL6763F57A61FE6FE8&ab_channel=InsightsintoMathematics">
+algebraic topology</a> by Norman Wildberger available on Youtube, and
+the <a href="https://en.wikipedia.org/wiki/Surface_(topology)">wikipedia
+page</a>.</p>
+<p>We start by defining combinatorial surfaces and illustrating the
+construct with several examples.</p>
+<p><strong>Definition:</strong> <em>A <strong>combinatorial
+surface</strong> is a finite set of <span
+class="math inline">\(n\)</span>-gons where every edge identified with a
+direction and a label, such that every label occurs twice.</em></p>
+<p><strong>Definition:</strong>
+<strong><em>Orientability</em></strong></p>
+<p><strong>Definition:</strong> <em>The <strong>Euler
+charateristic</strong> of a polygon with <span
+class="math inline">\(V\)</span> vertices, <span
+class="math inline">\(E\)</span> edges, and <span
+class="math inline">\(F\)</span> faces, is given by</em></p>
+<p><span class="math display">\[\chi = V - E +F\]</span></p>
+<figure>
+<img src='figures/Manifold.png' width=40% />
+<figcaption>
+Fig. 1 - A compact two-dimensional manifold
+</figcaption>
+</figure>
+<p><strong>Theorem:</strong> <em>Every connected closed compact surface
+is homeomorphic to either a sphere, a sphere with <span
+class="math inline">\(n\)</span>-handles, or a sphere with <span
+class="math inline">\(k\)</span> crosscaps.</em></p>
+<p><strong>Proof:</strong> <em>We start with the definition of a
+<strong>combinatorial surface</strong></em></p>
+</body>
+</html>
