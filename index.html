@@ -43,47 +43,73 @@ Roweth in 1987 for calculations in lattice quantum chromodynamic (see
 the
 <a href="https://www.sciencedirect.com/science/article/pii/037026938791197X?via%3Dihub">
 paper</a>). These notes serve as a brief introduction to the core of the
-HMC method for sampling distributions, inspired by the great
-<a href="https://arxiv.org/abs/1701.02434">review</a> by Michael
-Betancourt.</p>
-<p>The classification of surfaces asserts that every connected closed
-compact surface is topologically homeomorphic to either a sphere, a
-sphere with a number of handles or crosscaps. This theorem has been
-known since the 1860’s, but was recently simplified by John H. Conway
-(1992), known as the Zero Irrelevance Proof or in sort the ZIP proof. I
-will here describe a beautiful topological proof for the classification
-of combinatorial surfaces. These notes are based on
-<a href="">combinatorial topology of surfaces</a> by Robert C. James
-(1955), <a href="">Conway’s ZIP proof</a> by Francis and Weeks (1999),
-<a href="https://www.youtube.com/watch?v=Ap2c1dPyIVo&list=PL6763F57A61FE6FE8&ab_channel=InsightsintoMathematics">
-algebraic topology</a> by Norman Wildberger available on Youtube, and
-the <a href="https://en.wikipedia.org/wiki/Surface_(topology)">wikipedia
-page</a>.</p>
-<p>We start by defining combinatorial surfaces and illustrating the
-construct with several examples.</p>
-<p><strong>Definition:</strong> <em>A <strong>combinatorial
-surface</strong> is a finite set of <span
-class="math inline">\(n\)</span>-gons where every edge identified with a
-direction and a label, such that every label occurs twice.</em></p>
-<p><strong>Definition:</strong>
-<strong><em>Orientability</em></strong></p>
-<p><strong>Definition:</strong> <em>The <strong>Euler
-charateristic</strong> of a polygon with <span
-class="math inline">\(V\)</span> vertices, <span
-class="math inline">\(E\)</span> edges, and <span
-class="math inline">\(F\)</span> faces, is given by</em></p>
-<p><span class="math display">\[\chi = V - E +F\]</span></p>
-<figure>
+HMC method for sampling distributions, inspired by the
+<a href="https://arxiv.org/abs/1701.02434">review</a> “A Conceptual
+Introduction to Hamiltonian Monte Carlo” by Michael Betancourt.</p>
+<p>The sampling of classical probability distribution – including the
+uniform, the Poisson and Gaussian distributions – are nowadays
+implemented in most programming languages. However, one often encounters
+more intricate distributions that one may want to sample. In these
+cases, Monte Carlo methods shine, allowing one to transform samples from
+the classical distributions into samples of the target distribution
+<span class="math inline">\(\pi(q)\)</span>. The Hamiltonian Monte Carlo
+method is an efficient implementation of this idea borrowing insights
+form Hamiltonian dynamics in physics.</p>
+<p><strong>The Metropolis-Hastings Algorithm</strong> consists of a
+conceptual procedure to sample a target distribution <span
+class="math inline">\(\pi\)</span>. The algorithm consists of two steps.
+First, starting from the sample <span class="math inline">\(q\)</span>,
+we obtain the candidate <span class="math inline">\(q&#39;\)</span>.
+Next, we evaluate the acceptance probability <span
+class="math inline">\(a(q&#39;|q)\)</span> and check whether this number
+lies above a sample from a uniform distribution on the domain <span
+class="math inline">\([0,1]\)</span>. If the candidate is accepted, we
+repeat this process from <span class="math inline">\(q&#39;\)</span>. If
+the candidate is rejected, we start the process over from <span
+class="math inline">\(q\)</span>.</p>
+<p>Let’s assume we have a sample <span class="math inline">\(q\)</span>
+and design a procedure to generate a candidate sample <span
+class="math inline">\(q&#39;,\)</span> where the transition probability
+of <span class="math inline">\(q&#39;\)</span> conditioned on <span
+class="math inline">\(q\)</span> is given by <span
+class="math inline">\(\mathbb{Q}(q|q&#39;)\)</span>. The candidate <span
+class="math inline">\(q&#39;\)</span> is accepted with probability</p>
+<p><span class="math display">\[a(q&#39;|q) = \text{min}\left(1,
+\frac{\mathbb{Q}(q|q&#39;)
+\pi(q&#39;)}{\mathbb{Q}(q&#39;|q)\pi(q)}\right)\,,\]</span></p>
+<p>The Metropolis-Hastings algorithm is an implementation of detailed
+balance, where the transition to go from <span
+class="math inline">\(q\)</span> to <span
+class="math inline">\(q&#39;\)</span> is reversible, satisfying the
+equation</p>
+<p><span class="math display">\[P(q&#39;|q)\pi(q) =
+P(q|q&#39;)\pi(q&#39;)\,.\]</span></p>
+<p>Traditionally, the candidate sample was obtained by performing a
+random walk, defined by the transition probability</p>
+<p><span class="math display">\[\mathbb{Q}(q&#39;|q) =
+\mathcal{N}(q&#39;|q,\Sigma)\,,\]</span></p>
+<p>with the normal distribution <span
+class="math inline">\(\mathcal{N}(x|\mu,\Sigma)\)</span> defined by the
+mean <span class="math inline">\(\mu\)</span> covariance matrix <span
+class="math inline">\(\Sigma\)</span>. When the transition probability
+<span class="math inline">\(\mathbb{Q}(q&#39;|q)\)</span> is symmetric,
+we find that the acceptance probability is independent of the mechanism
+with which we obtained the candidate <span
+class="math inline">\(q\)</span>’, <em>i.e.</em>,</p>
+<p><span class="math display">\[a(q&#39;|q) = \text{min}\left(1,
+\frac{\pi(q&#39;)}{\pi(q)}\right)\,.\]</span></p>
+<p><strong>The Hamiltonian Monte Carlo algorithm</strong> is specific
+methods to find candidate samples <span
+class="math inline">\(q&#39;\)</span>, taking the target distribution
+into account to improving the acceptance probability.</p>
+<!-- <figure>
 <img src='figures/Manifold.png' width=40% />
-<figcaption>
-Fig. 1 - A compact two-dimensional manifold
-</figcaption>
+ <figcaption> Fig. 1 - A compact two-dimensional manifold</figcaption>
 </figure>
-<p><strong>Theorem:</strong> <em>Every connected closed compact surface
-is homeomorphic to either a sphere, a sphere with <span
-class="math inline">\(n\)</span>-handles, or a sphere with <span
-class="math inline">\(k\)</span> crosscaps.</em></p>
-<p><strong>Proof:</strong> <em>We start with the definition of a
-<strong>combinatorial surface</strong></em></p>
+
+
+**Theorem:** *Every connected closed compact surface is homeomorphic to either a sphere, a sphere with $n$-handles, or a sphere with $k$ crosscaps.*
+
+**Proof:** *We start with the definition of a **combinatorial surface***  -->
 </body>
 </html>

@@ -1,3 +1,3 @@
 # Hamiltonian Monte Carlo
 
-See the documentation https://jfeldbrugge.github.io/HMC/
+See the notes https://jfeldbrugge.github.io/HMC/
