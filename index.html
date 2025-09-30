@@ -82,8 +82,8 @@ balance, where the transition to go from <span
 class="math inline">\(q\)</span> to <span
 class="math inline">\(q&#39;\)</span> is reversible, satisfying the
 equation</p>
-<p><span class="math display">\[P(q&#39;|q)\pi(q) =
-P(q|q&#39;)\pi(q&#39;)\,.\]</span></p>
+<p><span class="math display">\[\mathbb{Q}(q&#39;|q)\pi(q) =
+\mathbb{Q}(q|q&#39;)\pi(q&#39;)\,.\]</span></p>
 <p>Traditionally, the candidate sample was obtained by performing a
 random walk, defined by the transition probability</p>
 <p><span class="math display">\[\mathbb{Q}(q&#39;|q) =
@@ -98,18 +98,20 @@ with which we obtained the candidate <span
 class="math inline">\(q\)</span>’, <em>i.e.</em>,</p>
 <p><span class="math display">\[a(q&#39;|q) = \text{min}\left(1,
 \frac{\pi(q&#39;)}{\pi(q)}\right)\,.\]</span></p>
-<p><strong>The Hamiltonian Monte Carlo algorithm</strong> is specific
-methods to find candidate samples <span
-class="math inline">\(q&#39;\)</span>, taking the target distribution
-into account to improving the acceptance probability.</p>
-<!-- <figure>
-<img src='figures/Manifold.png' width=40% />
- <figcaption> Fig. 1 - A compact two-dimensional manifold</figcaption>
-</figure>
-
-
-**Theorem:** *Every connected closed compact surface is homeomorphic to either a sphere, a sphere with $n$-handles, or a sphere with $k$ crosscaps.*
-
-**Proof:** *We start with the definition of a **combinatorial surface***  -->
+<p><strong>The Hamiltonian Monte Carlo algorithm</strong> is a specific
+method to find candidate samples <span
+class="math inline">\(q&#39;\)</span> given the sample <span
+class="math inline">\(q\)</span>, taking the target distribution into
+account to improving the acceptance probability. In Hamiltonian Monte
+Carlo, we interpret the variable <span class="math inline">\(q\)</span>
+as the position of a non-relativistic particle. We introduce an
+auxiliary variable <span class="math inline">\(p\)</span> that we will
+associate with the momentum of this particle. On phase-space, consisting
+of the pair <span class="math inline">\((q,p)\)</span>, we define the
+probability distribution</p>
+<p><span class="math display">\[\pi(q,p) = \pi(p|q)\pi(q)\]</span></p>
+<p>where the conditional probability <span
+class="math inline">\(\pi(p|q)\)</span> will be selected below to make
+contact with Hamiltonian dynamics.</p>
 </body>
 </html>
