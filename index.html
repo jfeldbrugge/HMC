@@ -43,9 +43,9 @@ Roweth in 1987 for calculations in lattice quantum chromodynamic (see
 the
 <a href="https://www.sciencedirect.com/science/article/pii/037026938791197X?via%3Dihub">
 paper</a>). These notes serve as a brief introduction to the core of the
-HMC method for sampling distributions, inspired by the
-<a href="https://arxiv.org/abs/1701.02434">review</a> “A Conceptual
-Introduction to Hamiltonian Monte Carlo” by Michael Betancourt.</p>
+HMC method for sampling distributions, inspired by the review
+<a href="https://arxiv.org/abs/1701.02434">“A Conceptual Introduction to
+Hamiltonian Monte Carlo”</a> by Michael Betancourt.</p>
 <p>The sampling of classical probability distribution – including the
 uniform, the Poisson and Gaussian distributions – are nowadays
 implemented in most programming languages. However, one often encounters
@@ -55,8 +55,10 @@ the classical distributions into samples of the target distribution
 <span class="math inline">\(\pi(q)\)</span>. The Hamiltonian Monte Carlo
 method is an efficient implementation of this idea borrowing insights
 form Hamiltonian dynamics in physics.</p>
-<p><strong>The Metropolis-Hastings Algorithm</strong> consists of a
-conceptual procedure to sample a target distribution <span
+<h3 id="the-metropolis-hastings-algorithm">The Metropolis-Hastings
+Algorithm</h3>
+<p>The Metropolis-Hastings Algorithm consists of a conceptual procedure
+to sample a target distribution <span
 class="math inline">\(\pi\)</span>. The algorithm consists of two steps.
 First, starting from the sample <span class="math inline">\(q\)</span>,
 we obtain the candidate <span class="math inline">\(q&#39;\)</span>.
@@ -98,17 +100,19 @@ with which we obtained the candidate <span
 class="math inline">\(q\)</span>’, <em>i.e.</em>,</p>
 <p><span class="math display">\[a(q&#39;|q) = \text{min}\left(1,
 \frac{\pi(q&#39;)}{\pi(q)}\right)\,.\]</span></p>
-<p><strong>The Hamiltonian Monte Carlo algorithm</strong> is a specific
-method to find candidate samples <span
-class="math inline">\(q&#39;\)</span> given the sample <span
-class="math inline">\(q\)</span>, taking the target distribution into
-account to improving the acceptance probability. In Hamiltonian Monte
-Carlo, we interpret the variable <span class="math inline">\(q\)</span>
-as the position of a non-relativistic particle and introduce an
-auxiliary variable <span class="math inline">\(p\)</span> that we will
-associate with the momentum of this particle. On phase-space, consisting
-of the pair <span class="math inline">\((q,p)\)</span>, we define the
-probability distribution</p>
+<h3 id="the-hamiltonian-monte-carlo-algorithm">The Hamiltonian Monte
+Carlo algorithm</h3>
+<p>The Hamiltonian Monte Carlo algorithm is a specific method to find
+candidate samples <span class="math inline">\(q&#39;\)</span> given the
+sample <span class="math inline">\(q\)</span>, taking the target
+distribution into account to improving the acceptance probability. In
+Hamiltonian Monte Carlo, we interpret the variable <span
+class="math inline">\(q\)</span> as the position of a non-relativistic
+particle and introduce an auxiliary variable <span
+class="math inline">\(p\)</span> that we will associate with the
+momentum of this particle. On phase-space, consisting of the pair <span
+class="math inline">\((q,p)\)</span>, we define the probability
+distribution</p>
 <p><span class="math display">\[\pi(q,p) =
 \pi(p|q)\pi(q)\,,\]</span></p>
 <p>where the conditional probability <span
@@ -119,9 +123,12 @@ elbow room to construct a powerful mechanism to sample a <span
 class="math inline">\(\mathbb{Q}(q&#39;|q)\)</span> while optimizing the
 acceptance probability.</p>
 <p>Now, writing</p>
-<p><span class="math display">\[\pi(q,p) = e^{-H(q,p)}\,,\]</span></p>
-<p>for some function <span class="math inline">\(H\)</span>, we observe
-that the acceptance probability on phase-space assumes the form</p>
+<p><span class="math display">\[\pi(q,p) = \mathcal{A}\,
+e^{-H(q,p)}\,,\]</span></p>
+<p>for some function <span class="math inline">\(H\)</span> with some
+normalization constant <span class="math inline">\(\mathcal{A}\)</span>,
+we observe that the acceptance probability on phase-space assumes the
+form</p>
 <p><span class="math display">\[a(q&#39;, p&#39;|q,p) =
 \text{min}\left(1, \frac{\mathbb{Q}(q,p|q&#39;,p&#39;)
 }{\mathbb{Q}(q&#39;,p&#39;|q,p)}
@@ -144,8 +151,8 @@ class="math inline">\(V(q)\)</span>. Now, substituting the definition of
 <p><span class="math display">\[H(q,p) = - \ln \pi(q,p) =- \ln \pi(p|q)
 - \ln \pi(q)\,,\]</span></p>
 <p>leading on the on hand to the conditional probability</p>
-<p><span class="math display">\[\pi(p|q) = e^{-\frac{1}{2}p^T M^{-1}
-p}\,,\]</span></p>
+<p><span class="math display">\[\pi(p|q) \propto e^{-\frac{1}{2}p^T
+M^{-1} p}\,,\]</span></p>
 <p>and on the other hand to the potential energy of the particle</p>
 <p><span class="math display">\[V(q) = - \ln \pi(q)\,.\]</span></p>
 <p>Now that we have connected the word of probability theory with
@@ -156,12 +163,94 @@ forward by solving the Hamilton equations</p>
 <p><span class="math display">\[ \frac{\partial q}{\partial t} =
 \frac{\partial H(q,p)}{\partial p}\,,\quad  \frac{\partial p}{\partial
 t} = -\frac{\partial H(q,p)}{\partial q}\,.\]</span></p>
-<p>This system of differential equations is time reversible and
-preserves the Hamiltonian as</p>
+<p>This system of differential equations is time reversible upon
+reversing the momentum <span class="math inline">\(p \mapsto -p\)</span>
+and preserves the Hamiltonian as</p>
 <p><span
 class="math display">\[\frac{\mathrm{d}H(q,p)}{\mathrm{d}t}=\frac{\partial
 H(q,p)}{\partial q} \frac{\partial q}{\partial t} +\frac{\partial
 H(q,p)}{\partial p} \frac{\partial p}{\partial t} =0\,.\]</span></p>
-<p><strong>The implementation</strong></p>
+<h3 id="the-implementation">The implementation</h3>
+<p>The implementation relies on two steps. Given the sample <span
+class="math inline">\(q\)</span> of the target distribution <span
+class="math inline">\(\pi(q)\)</span>, we sample the momentum from the
+normal distribution</p>
+<p><span class="math display">\[p \sim \mathcal{N}(0, M)\,.\]</span></p>
+<p>The mass matrix <span class="math inline">\(M\)</span> is a positive
+definite symmetric matrix that we can freely tune for our problem. We
+evolve the particle in phase-space <span
+class="math inline">\((q,p)\)</span> by solving the Hamilton equations
+for a propagation time <span class="math inline">\(T\)</span>, where
+<span class="math inline">\(T\)</span> is a free parameter. As the
+conservation of the Hamiltonian is more important than the actual
+solution of the Hamilton equations, HMC is traditionally implemented
+with a symplectic integrator. In particular, we use the first-order
+leapfrog scheme. Starting from <span
+class="math inline">\((q_0,p_0)=(q,p)\)</span>, we update the position
+and momentum following the steps</p>
+<p><span class="math display">\[
+\begin{align}
+p_{n+\frac{1}{2}} &amp;= p_n - \frac{\epsilon}{2} \frac{\partial
+V}{\partial q}(q_n)\,,\\
+q_{n+1} &amp;= q_n + \epsilon\, p_{n+\frac{1}{2}}\,,\\
+p_{n+1} &amp;= p_{n+\frac{1}{2}} - \frac{\epsilon}{2} \frac{\partial
+V}{\partial q}(q_{n+1})\,,
+\end{align}
+\]</span></p>
+<p>with <span class="math inline">\((q_n,p_n)=(q(\epsilon n), p(\epsilon
+n))\)</span>, where <span class="math inline">\(\epsilon = T/L\)</span>
+is the integration step size with <span class="math inline">\(L\)</span>
+steps, till we reach <span class="math inline">\((q_L,p_L)\)</span>.</p>
+<p>Next, we evaluate the difference in Hamiltonian</p>
+<p><span class="math display">\[\Delta H = H(q_L,p_L) -
+H(q_0,p_0)\]</span></p>
+<p>and the associated acceptance probability</p>
+<p><span class="math display">\[a(q_L, p_L|q_0,p_0) =
+\text{min}\left(1,  \frac{\mathbb{Q}(q,p|q_L,p_L)
+}{\mathbb{Q}(q_L,p_L|q,p)} e^{-\Delta H}\right)\,.\]</span></p>
+<p>The approximate solution of the Hamilton equations with the leap-frog
+method is a deterministic process, <em>i.e.</em>,</p>
+<p><span class="math display">\[\mathbb{Q}(q&#39;,p&#39;|q_0,p_0) =
+\delta(q&#39;-q_L)\delta(p&#39;-p_L)\,.\]</span></p>
+<p>Consequently, the ratio of the transition probabilities vanishes,
+<em>i.e.</em>,</p>
+<p><span class="math display">\[\frac{\mathbb{Q}(q_0,p_0|q_L,p_L)
+}{\mathbb{Q}(q_L,p_L|q_0,p_0)} = \frac{0}{\infty}=0\,.\]</span></p>
+<p>The particle always moves from <span
+class="math inline">\((q_0,p_0)\)</span> to <span
+class="math inline">\((q_L,p_L)\)</span> but almost never not backwards.
+We can solve this problem by flipping the momentum <span
+class="math inline">\(p \mapsto -p\)</span>, making the transition
+reversible, <em>i.e.</em>,</p>
+<p><span class="math display">\[\mathbb{Q}(q&#39;,p&#39;|q_0,p_0) =
+\delta(q&#39;-q_L)\delta(p&#39;+p_L)\,.\]</span></p>
+<p>Now the acceptance probability</p>
+<p><span class="math display">\[a(q_L, -p_L|q_0,p_0) =
+\text{min}\left(1, e^{-\Delta H}\right)\,.\]</span></p>
+<p>The point <span class="math inline">\(q&#39;=q_L\)</span> is accepted
+by drawing a number <span class="math inline">\(r\)</span> from a
+uniform distribution on <span class="math inline">\([0,1]\)</span> and
+checking whether <span class="math inline">\(r&lt; a(q_L,
+-p_L|q_0,p_0)\)</span>. Note that the flip in momentum does not change
+the Hamiltonian. We repeat these steps till we have adequately sampled
+the target distribution <span class="math inline">\(\pi(q)\)</span>.</p>
+<p>For optimal performance, it is common to set the mass matrix <span
+class="math inline">\(M\)</span> equal to the covariance of the variable
+<span class="math inline">\(q\)</span>. The integration time <span
+class="math inline">\(T\)</span> is set such that we explore the
+complete support of the distribution. The number of steps <span
+class="math inline">\(L\)</span> is taken large enough to ensure the
+change in Hamiltonian <span class="math inline">\(\Delta H\)</span> is
+small.</p>
+<h3 id="generalizations">Generalizations</h3>
+<p>The discussion above shows the bare minimum implementation of the
+Hamiltonian Monte Carlo algorithm. Over the last few years, several
+extensions and generalizations were proposed. In particular, this
+includes Riemannian Hamiltonian Monte Carlo, where the mass matrix <span
+class="math inline">\(M\)</span> is dependent on the position <span
+class="math inline">\(q\)</span>, and the no-u-turn algorithm. For more
+details, see the review <a href="https://arxiv.org/abs/1701.02434">“A
+Conceptual Introduction to Hamiltonian Monte Carlo”</a> by Michael
+Betancourt and references therein.</p>
 </body>
 </html>
