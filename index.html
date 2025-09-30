@@ -104,14 +104,64 @@ class="math inline">\(q&#39;\)</span> given the sample <span
 class="math inline">\(q\)</span>, taking the target distribution into
 account to improving the acceptance probability. In Hamiltonian Monte
 Carlo, we interpret the variable <span class="math inline">\(q\)</span>
-as the position of a non-relativistic particle. We introduce an
+as the position of a non-relativistic particle and introduce an
 auxiliary variable <span class="math inline">\(p\)</span> that we will
 associate with the momentum of this particle. On phase-space, consisting
 of the pair <span class="math inline">\((q,p)\)</span>, we define the
 probability distribution</p>
-<p><span class="math display">\[\pi(q,p) = \pi(p|q)\pi(q)\]</span></p>
+<p><span class="math display">\[\pi(q,p) =
+\pi(p|q)\pi(q)\,,\]</span></p>
 <p>where the conditional probability <span
 class="math inline">\(\pi(p|q)\)</span> will be selected below to make
-contact with Hamiltonian dynamics.</p>
+contact with Hamiltonian dynamics. In a sense, the introduction of the
+function <span class="math inline">\(\pi(p|q)\)</span> will give us the
+elbow room to construct a powerful mechanism to sample a <span
+class="math inline">\(\mathbb{Q}(q&#39;|q)\)</span> while optimizing the
+acceptance probability.</p>
+<p>Now, writing</p>
+<p><span class="math display">\[\pi(q,p) = e^{-H(q,p)}\,,\]</span></p>
+<p>for some function <span class="math inline">\(H\)</span>, we observe
+that the acceptance probability on phase-space assumes the form</p>
+<p><span class="math display">\[a(q&#39;, p&#39;|q,p) =
+\text{min}\left(1, \frac{\mathbb{Q}(q,p|q&#39;,p&#39;)
+}{\mathbb{Q}(q&#39;,p&#39;|q,p)}
+e^{-H(q&#39;,p&#39;)+H(q,p)}\right)\,,\]</span></p>
+<p>Hence, if we were we design the sampling mechanism that for the
+candidate <span class="math inline">\(q&#39;\)</span> that (1) is
+symmetric <span
+class="math inline">\(\mathbb{Q}(q,p|q&#39;,p&#39;)=\mathbb{Q}(q&#39;,p&#39;|q,p)\)</span>,
+and (2) preserves the function <span class="math inline">\(H\)</span>,
+we will always accept <span class="math inline">\(q&#39;\)</span>! Since
+these are exactly the properties of a particle in Hamiltonian mechanics,
+we interpret <span class="math inline">\(H\)</span> as the Hamiltonian
+of the particle,</p>
+<p><span class="math display">\[H(q,p) = \frac{1}{2} p^T M^{-1} p
++V(q)\,,\]</span></p>
+<p>in terms of the kinetic energy with the mass matrix <span
+class="math inline">\(M\)</span> and potential energy <span
+class="math inline">\(V(q)\)</span>. Now, substituting the definition of
+<span class="math inline">\(H\)</span>, we find</p>
+<p><span class="math display">\[H(q,p) = - \ln \pi(q,p) =- \ln \pi(p|q)
+- \ln \pi(q)\,,\]</span></p>
+<p>leading on the on hand to the conditional probability</p>
+<p><span class="math display">\[\pi(p|q) = e^{-\frac{1}{2}p^T M^{-1}
+p}\,,\]</span></p>
+<p>and on the other hand to the potential energy of the particle</p>
+<p><span class="math display">\[V(q) = - \ln \pi(q)\,.\]</span></p>
+<p>Now that we have connected the word of probability theory with
+theoretical physics, we update <span class="math inline">\(q\)</span> to
+<span class="math inline">\((q,p)\)</span> by sampling <span
+class="math inline">\(\pi(p|q)\)</span>. Next we move our particle
+forward by solving the Hamilton equations</p>
+<p><span class="math display">\[ \frac{\partial q}{\partial t} =
+\frac{\partial H(q,p)}{\partial p}\,,\quad  \frac{\partial p}{\partial
+t} = -\frac{\partial H(q,p)}{\partial q}\,.\]</span></p>
+<p>This system of differential equations is time reversible and
+preserves the Hamiltonian as</p>
+<p><span
+class="math display">\[\frac{\mathrm{d}H(q,p)}{\mathrm{d}t}=\frac{\partial
+H(q,p)}{\partial q} \frac{\partial q}{\partial t} +\frac{\partial
+H(q,p)}{\partial p} \frac{\partial p}{\partial t} =0\,.\]</span></p>
+<p><strong>The implementation</strong></p>
 </body>
 </html>
